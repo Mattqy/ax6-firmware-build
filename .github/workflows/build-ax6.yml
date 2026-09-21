@@ -65,17 +65,9 @@ jobs:
           GIT_TERMINAL_PROMPT: 0
         run: |
           cd openwrt
-          ./scripts/feeds update -a 2>&1 | tee /tmp/feeds_update.log || true
-          # 检查关键 feed 是否成功
-          for feed in passwall openclash; do
-            if [ ! -d "feeds/$feed" ]; then
-              echo "⚠️ $feed feed 未克隆成功，跳过"
-            else
-              echo "✅ $feed feed 正常"
-            fi
-          done
+          ./scripts/feeds update -a
           ./scripts/feeds install -a
-          # 强制安装中文语言包（防止 defconfig 裁剪）
+          # 强制安装中文语言包
           ./scripts/feeds install luci-i18n-base-zh-cn 2>/dev/null || true
 
       - name: 加载自定义配置
@@ -127,13 +119,14 @@ jobs:
         if: steps.tag.outputs.status == 'success'
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
-          name: 红米AX6 NSS固件(stock) ${{ steps.tag.outputs.release_tag }}
+          name: 红米AX6 NSS极简固件(stock) ${{ steps.tag.outputs.release_tag }}
           body: |
             | 项目 | 内容 |
             |---|---|
-            | 设备 | redmi,ax6-stock（无需扩容）|
-            | NSS | 满血加速 |
-            | 插件 | PassWall / HomeProxy / OpenClash / SmartDNS / mosdns / AdGuard Home / DDNS / WOL / frp / Lucky / iStore |
-            | 默认IP | 192.168.100.1 |
-            | 默认密码 | password |
+            | 设备 | redmi,ax6-stock（原厂分区，无需扩容）|
+            | NSS | 满血加速驱动已集成 |
+            | 主题 | 原生 Bootstrap（中文） |
+            | 主要组件 | SmartDNS / Lucky / TTYD / SQM |
+            | 默认 IP | 10.0.0.1 |
+            | 默认密码 | password (或空密码) |
           files: ${{ steps.findbin.outputs.BIN_DIR }}/*

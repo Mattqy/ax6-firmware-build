@@ -126,7 +126,7 @@ jobs:
             | 设备 | redmi,ax6-stock（原厂分区，无需扩容）|
             | NSS | 满血加速驱动已集成 |
             | 主题 | 原生 Bootstrap（中文） |
-            | 主要组件 | SmartDNS / Lucky / TTYD / SQM |
+            | 主要组件 | SmartDNS /NSS|
             | 默认 IP | 10.0.0.1 |
             | 默认密码 | password (或空密码) |
           files: ${{ steps.findbin.outputs.BIN_DIR }}/*
